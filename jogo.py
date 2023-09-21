@@ -49,7 +49,7 @@ def update():
 
     # Atirar
     if pyxel.btnp(pyxel.KEY_SPACE):
-        tiros.append((nave_x + 6, nave_y))
+        tiros.append((nave_x + 13, nave_y))
 
     # Movimento dos tiros
     for i in range(len(tiros)):
@@ -95,22 +95,22 @@ def update():
             
         #Nivel 2
         #aumento de velocidade
-        if pontuacao==30:
+        if pontuacao==200:
             inimigo_speed = 1.5
             nivel=2
         #Nivel 3
         #aumento de velocidade
-        if pontuacao==50:
+        if pontuacao==500:
             inimigo_speed = 2
             nivel=3
         #Nivel 4
         #aumento de velocidade
-        if pontuacao==60:
+        if pontuacao==700:
             inimigo_speed = 2.5
             nivel=4
         #Nivel 5
         #aumento de velocidade
-        if pontuacao==100:
+        if pontuacao==1000:
             inimigo_speed = 3
             nivel=5
         
@@ -124,21 +124,18 @@ def draw():
     for i in range(0, 200): 
         pyxel.pset(pyxel.rndi(0, 200), pyxel.rndi(0, 200), pyxel.rndi(5, 7))
         
-    # Desenhar inimigos
-    pyxel.load("inimigo.pyxres")
+    # Desenhar inimigos e Inimigos
+    pyxel.load("naves.pyxres")
     for inimigo in inimigos:
-        pyxel.blt(inimigo[0], inimigo[1], 0, 1,128,15,15,7)
+        pyxel.blt(inimigo[0], inimigo[1], 0, 27,128,52,27,7)
         
-    # Desenhar nave
-    #pyxel.rect(nave_x, nave_y, 16, 16, 6)
-    pyxel.load("navezinha.pyxres")
-    pyxel.blt(nave_x, nave_y, 0, 1, 128, 15, 15, 7)
+    pyxel.blt(nave_x, nave_y, 0, 1, 128, 27, 15, 7)
     
     # Desenhar tiros
     for tiro in tiros:
         pyxel.rect(tiro[0], tiro[1], 2, 5, 4)
 
-    # Desenhar pontuação
+    # Desenhar pontuação e Nivel
     pyxel.text(5, 5, f"Pontos: {pontuacao}", 7)
     
     pyxel.text(15, 15, f"Nivel: {nivel}", 7)
