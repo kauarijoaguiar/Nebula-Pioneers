@@ -25,21 +25,19 @@ pontuacao = 0
 #Nivel
 nivel=1
 
-#contador
-contador=0
+naves_saidas = 0
 
 def iniciar_jogo():
-    global nave_x, tiros, inimigos, pontuacao, estado_atual,nivel,contador
+    global nave_x, tiros, inimigos, pontuacao, nivel
     nave_x = WINDOW_WIDTH // 2
     tiros = []
     inimigos = []
     pontuacao = 0
-    estado_atual = ESTADO_JOGO
-    nivel=0
-    contador=0
+    nivel = 1
+    
 def update():
     
-    global nave_x, tiros, inimigos, pontuacao, nivel, inimigo_speed,contador
+    global nave_x, tiros, inimigos, pontuacao, nivel, inimigo_speed, naves_saidas
 
     # Movimento da nave
     if pyxel.btn(pyxel.KEY_LEFT) and nave_x > 0:
@@ -62,8 +60,13 @@ def update():
     for i in range(len(inimigos)):
         inimigos[i] = (inimigos[i][0], inimigos[i][1] + inimigo_speed)
 
+
     # Remover inimigos que saíram da tela
-    inimigos = [inimigo for inimigo in inimigos if inimigo[1] < WINDOW_HEIGHT]
+    for inimigo in inimigos:
+        if inimigo[1] >= WINDOW_HEIGHT:
+            naves_saidas += 1
+            inimigos.remove(inimigo)
+    
 
     # Spawn de inimigos aleatórios
     if pyxel.frame_count % 30 == 0 and random.random() < inimigo_spawn_chance:
@@ -113,6 +116,11 @@ def update():
         if pontuacao==1000:
             inimigo_speed = 3
             nivel=5
+        
+        if naves_saidas >= 5:
+            pyxel.quit()
+    
+        
         
 def draw(self, camera=pyxel):
     x,y, _right, _top=self.bb
