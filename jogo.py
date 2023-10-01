@@ -10,30 +10,28 @@ nave_speed = 2
 
 tiros = []
 tiro_speed = 4
-
 inimigos = []
 inimigo_speed = 1
 inimigo_spawn_chance = 0.5
 
 pontuacao = 0
-
 nivel=1
-
 naves_saidas = 0
-
-
 menu = 0
 
 def iniciar_jogo():
-    global nave_x, tiros, inimigos, pontuacao, nivel, menu
+    global nave_x, tiros, inimigos, pontuacao, nivel, naves_saidas, menu 
     nave_x = WINDOW_WIDTH // 2
     tiros = []
     inimigos = []
     pontuacao = 0
     nivel = 1
-    menu=0
+    naves_saidas=0
+    menu = 0
+
     
 def update():
+    
     global nave_x, tiros, inimigos, pontuacao, nivel, inimigo_speed, naves_saidas, menu
     if menu==0:
         if pyxel.btnp(pyxel.KEY_RETURN):
@@ -72,25 +70,26 @@ def update():
             for inimigo in inimigos:
                 if (
                     tiro[0] >= inimigo[0]
-                    and tiro[0] <= inimigo[0] + 16
-                    and tiro[1] <= inimigo[1] + 16
+                    and tiro[0] <= inimigo[0] + 23
+                    and tiro[1] <= inimigo[1] + 14
                 ):
                     tiros.remove(tiro)
                     inimigos.remove(inimigo)
                     pontuacao += 10
 
+####### MUDEI AQUI PRA 23 E 20 NA tentativa de achar as dimensoes, deu mais ou menos certo
+####### e mudei ali pra 8 E 7 QUE É A METADE DA ALTURA DA NAVE, OU SEJA QUANDO O INIMIGO CHEGA NO MEIO DELA
+####### EM RELAÇÃO A ALTURA ELE DETECTA A COLISÃO
         for inimigo in inimigos:
             if (
-                inimigo[0] >= nave_x
-                and inimigo[0] <= nave_x + 15
-                and inimigo[1] >= nave_y
-                and inimigo[1] <= nave_y + 15
+                inimigo[0] + 23 >= nave_x and
+                inimigo[0] <= nave_x + 20 and
+                inimigo[1] + 8 >= nave_y and
+                inimigo[1] <= nave_y + 7
             ):
                 inimigos.remove(inimigo)
                 menu = 2
-                
-                
-                
+
             #Nivel 2
             #aumento de velocidade
             if pontuacao==200:
@@ -139,9 +138,9 @@ def draw():
             
         pyxel.load("naves.pyxres")
         for inimigo in inimigos:
-            pyxel.blt(inimigo[0], inimigo[1], 0, 27,128,52,27,7)
+            pyxel.blt(inimigo[0], inimigo[1], 0, 28,128,24,16,7)
             
-        pyxel.blt(nave_x, nave_y, 0, 1, 128, 27, 15, 7)
+        pyxel.blt(nave_x, nave_y, 0, 5, 128, 22, 15, 7)
         
         for tiro in tiros:
             pyxel.rect(tiro[0], tiro[1], 2, 5, 4)
@@ -152,8 +151,8 @@ def draw():
 
     elif menu == 2:
         pyxel.cls(0)
-        pyxel.text(15, 45, 'GAME OVER!', pyxel.frame_count % 16)
-        pyxel.text(5, 5, 'Aperte "ENTER" para reiniciar\n Aperte "S" para sair', 7)
+        pyxel.text(60, 55, 'GAME OVER!', pyxel.frame_count % 16)
+        pyxel.text(5, 80, '"ENTER" para reiniciar\n"S" para sair', 7)
 
 pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT)
-pyxel.run(update, draw)
+pyxel.run(update,draw)
